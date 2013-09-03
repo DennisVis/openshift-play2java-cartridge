@@ -38,12 +38,6 @@ Endpoints:
     Backend: ''
     Options: 
       websocket: true
-  - Frontend: /front1a
-    Backend: /back1a
-  - Frontend: /health
-    Backend: ''
-    Options:
-      health: true
 Scaling:
   Min: 1
   Max: -1
