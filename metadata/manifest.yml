@@ -1,0 +1,48 @@
+---
+Name: play2java
+Cartridge-Short-Name: play2java
+Display-Name: Play Framework 2 Java Cartridge 0.1
+Description: A Play Framework 2 cartridge for Java applications.
+Version: '0.1'
+Versions:
+- '0.1'
+License: ASL 2.0
+Vendor: Dennis Vis
+Cartridge-Version: 0.0.1
+Cartridge-Vendor: DennisVis
+Categories:
+- service
+- play_framework
+Provides:
+- play2java-0.1
+- play2java
+Cart-Data:
+- Key: OPENSHIFT_PLAY_2_JAVA
+  Type: environment
+  Description: An example environment variable using ERB processing
+Group-Overrides:
+  - components:
+    - play2java
+Subscribes:
+  set-env:
+    Type: ENV:*
+    Required: false
+Endpoints:
+- Private-IP-Name: IP
+  Private-Port-Name: PORT
+  Private-Port: 8080
+  Public-Port-Name: PROXY_PORT
+  Mappings:
+  - Frontend: ''
+    Backend: ''
+    Options: 
+      websocket: true
+  - Frontend: /front1a
+    Backend: /back1a
+  - Frontend: /health
+    Backend: ''
+    Options:
+      health: true
+Scaling:
+  Min: 1
+  Max: -1

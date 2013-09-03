@@ -1,0 +1,32 @@
+#!/bin/bash -eu
+
+source $OPENSHIFT_CARTRIDGE_SDK_BASH
+
+function start {
+  echo "Starting Play 2 Java cartridge"
+  ${OPENSHIFT_REPO_DIR}.openshift/action_hooks/start
+}
+
+function stop {
+  echo "Stopping Play 2 Java cartridge"
+  ${OPENSHIFT_REPO_DIR}.openshift/action_hooks/stop
+}
+
+function catchall {
+  echo "Not yet implemented"
+}
+
+case "$1" in
+  start)                start ;;
+  stop)                 stop ;;
+  status)      status ;;
+  reload)      catchall ;;
+  tidy)        catchall ;;
+  pre-build)   catchall ;;
+  build)       catchall ;;
+  deploy)      catchall ;;
+  post-deploy) catchall ;;
+  *)           exit 0
+esac
+
+exit 0
