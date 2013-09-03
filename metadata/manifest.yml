@@ -1,18 +1,18 @@
----
 Name: play2java
 Cartridge-Short-Name: play2java
-Display-Name: Play Framework 2 Java Cartridge 0.1
+Display-Name: Play Framework 2 Java 0.1
 Description: A Play Framework 2 cartridge for Java applications.
 Version: '0.1'
-Versions:
-- '0.1'
-License: ASL 2.0
+Versions: ['0.1']
+Website: https://github.com/DennisVis/play2java-openshift-cartridge
+Cartridge-Version: 0.0.1
 Vendor: Dennis Vis
 Cartridge-Version: 0.0.1
 Cartridge-Vendor: DennisVis
 Categories:
 - service
 - play_framework
+- web_framework
 Provides:
 - play2java-0.1
 - play2java
@@ -46,3 +46,4 @@ Endpoints:
 Scaling:
   Min: 1
   Max: -1
+Install-Build-Required: false
