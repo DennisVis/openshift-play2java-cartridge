@@ -5,6 +5,7 @@ Description: A Play Framework 2 cartridge for Java applications.
 Version: '0.1'
 Versions: ['0.1']
 Website: https://github.com/DennisVis/play2java-openshift-cartridge
+Source-Url: https://github.com/DennisVis/play2java-openshift-cartridge.git
 Cartridge-Version: 0.0.1
 Vendor: Dennis Vis
 Cartridge-Version: 0.0.1
