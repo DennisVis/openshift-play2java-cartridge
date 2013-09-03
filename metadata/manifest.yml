@@ -9,7 +9,7 @@ Source-Url: https://github.com/DennisVis/play2java-openshift-cartridge.git
 Cartridge-Version: 0.0.1
 Vendor: Dennis Vis
 Cartridge-Version: 0.0.1
-Cartridge-Vendor: DennisVis
+Cartridge-Vendor: dennisvis
 Categories:
 - service
 - play_framework
