@@ -29,7 +29,7 @@ function start() {
     {
 	    echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME' from versions/play-$PLAY_VERSION..."
 
-	    nohup "${OPENSHIFT_REPO_DIR}.openshift/action_hooks/start" >> $logf 2>&1 &
+	    nohup "${OPENSHIFT_PLAY2JAVA_DIR}.openshift/action_hooks/start" >> $logf 2>&1 &
 
 	    ret=$?
 	    npid=$!

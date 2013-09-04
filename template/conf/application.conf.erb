@@ -5,7 +5,7 @@
 # ~~~~~
 # The secret key is used to secure cryptographics functions.
 # If you deploy your application to several instances be sure to use the same key!
-application.secret="<%= SecureRandom.base64(64) %>"
+application.secret="<%= ENV['CRYPTO_KEY'] %>"
 
 # The application languages
 # ~~~~~
@@ -66,3 +66,17 @@ logger.play=INFO
 # Logger provided to your application:
 logger.application=DEBUG
 
+
+# Openshift database configuration
+# ~~~~~
+# You can declare as many datasources as you want.
+# By convention, the default datasource is named `default`
+#
+# db.default.driver=com.mysql.jdbc.Driver
+# db.default.url="jdbc:mysql://"${OPENSHIFT_DB_HOST}":"${OPENSHIFT_DB_PORT}/${OPENSHIFT_APP_NAME}
+# db.default.user=${OPENSHIFT_DB_USERNAME}
+# db.default.password=${OPENSHIFT_DB_PASSWORD}
+
+# openshift action_hooks scripts configuration
+# ~~~~~
+openshift.play.params="-DapplyEvolutions.default=true"
