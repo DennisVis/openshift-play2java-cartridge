@@ -11,9 +11,9 @@ if [[ ! $? -eq 0 ]]; then
 	exit $?
 fi
 
-LOG_FILE="${OPENSHIFT_LOG_DIR}play.log"
+LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
 
-APP_COMMAND="${OPENSHIFT_PLAY2JAVA_DIR} ${OPENSHIFT_HOMEDIR}usr/sbin/playframework/play clean compile start $PLAY_PARAMS "\
+APP_COMMAND="${OPENSHIFT_PLAY2JAVA_DIR} ${OPENSHIFT_HOMEDIR}usr/bin/playframework/play clean compile start $PLAY_PARAMS "\
 "-Dhttp.port=8080 "\
 "-Dhttp.address=${OPENSHIFT_INTERNAL_IP} "\
 "-Dconfig.resource=openshift.conf"
