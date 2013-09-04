@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
+	<info organisation="org.hibernate"
+		module="hibernate-validator"
+		revision="4.3.0.Final"
+		status="release"
+		publication="20120509204612"
+	>
+		<description homepage="">
+		Hibernate&apos;s Bean Validation (JSR-303) reference implementation.
+		</description>
+		<m:dependency.management__joda-time__joda-time__version>1.6</m:dependency.management__joda-time__joda-time__version>
+		<m:properties__db.dialect>org.hibernate.dialect.H2Dialect</m:properties__db.dialect>
+		<m:dependency.management__org.jsoup__jsoup__version>1.6.1</m:dependency.management__org.jsoup__jsoup__version>
+		<m:dependency.management__javax.validation__validation-api__version>1.0.0.GA</m:dependency.management__javax.validation__validation-api__version>
+		<m:dependency.management__org.testng__testng__version>5.14.2</m:dependency.management__org.testng__testng__version>
+		<m:properties__jdbc.driver>org.h2.Driver</m:properties__jdbc.driver>
+		<m:dependency.management__org.hibernate__hibernate-validator-annotation-processor__version>4.3.0.Final</m:dependency.management__org.hibernate__hibernate-validator-annotation-processor__version>
+		<m:dependency.management__org.hibernate__hibernate-validator__version>4.3.0.Final</m:dependency.management__org.hibernate__hibernate-validator__version>
+		<m:properties__jdbc.url>jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1</m:properties__jdbc.url>
+		<m:dependency.management__org.hibernate__hibernate-entitymanager__version>3.6.0.Final</m:dependency.management__org.hibernate__hibernate-entitymanager__version>
+		<m:dependency.management__org.hibernate.javax.persistence__hibernate-jpa-2.0-api__version>1.0.1.Final</m:dependency.management__org.hibernate.javax.persistence__hibernate-jpa-2.0-api__version>
+		<m:dependency.management__com.h2database__h2__version>1.2.124</m:dependency.management__com.h2database__h2__version>
+		<m:dependency.management__org.codehaus.groovy__groovy__version>1.8.3</m:dependency.management__org.codehaus.groovy__groovy__version>
+		<m:properties__project.build.sourceEncoding>UTF-8</m:properties__project.build.sourceEncoding>
+		<m:properties__jdbc.user>sa</m:properties__jdbc.user>
+		<m:dependency.management__junit__junit__version>4.8.2</m:dependency.management__junit__junit__version>
+		<m:dependency.management__org.jboss.logging__jboss-logging__version>3.1.0.CR2</m:dependency.management__org.jboss.logging__jboss-logging__version>
+		<m:properties__org.codehaus.mojo.chronos.version>1.0-beta-3</m:properties__org.codehaus.mojo.chronos.version>
+		<m:dependency.management__org.easymock__easymock__version>3.0</m:dependency.management__org.easymock__easymock__version>
+		<m:maven.plugins>org.apache.maven.plugins__maven-enforcer-plugin__1.0.1|org.apache.maven.plugins__maven-enforcer-plugin__1.0.1|org.codehaus.mojo__jaxb2-maven-plugin__null|org.bsc.maven__maven-processor-plugin__null|org.apache.maven.plugins__maven-jar-plugin__null|org.apache.felix__maven-bundle-plugin__null|org.apache.maven.plugins__maven-surefire-plugin__null|org.apache.maven.plugins__maven-surefire-report-plugin__null|org.apache.maven.plugins__maven-javadoc-plugin__null|org.apache.maven.plugins__maven-release-plugin__null|org.jboss.maven.plugins__maven-injection-plugin__null</m:maven.plugins>
+		<m:dependency.management__log4j__log4j__version>1.2.16</m:dependency.management__log4j__log4j__version>
+	</info>
+	<configurations>
+		<conf name="default" visibility="public" description="runtime dependencies and master artifact can be used with this conf" extends="runtime,master"/>
+		<conf name="master" visibility="public" description="contains only the artifact published by this module itself, with no transitive dependencies"/>
+		<conf name="compile" visibility="public" description="this is the default scope, used if none is specified. Compile dependencies are available in all classpaths."/>
+		<conf name="provided" visibility="public" description="this is much like compile, but indicates you expect the JDK or a container to provide it. It is only available on the compilation classpath, and is not transitive."/>
+		<conf name="runtime" visibility="public" description="this scope indicates that the dependency is not required for compilation, but is for execution. It is in the runtime and test classpaths, but not the compile classpath." extends="compile"/>
+		<conf name="test" visibility="private" description="this scope indicates that the dependency is not required for normal use of the application, and is only available for the test compilation and execution phases." extends="runtime"/>
+		<conf name="system" visibility="public" description="this scope is similar to provided except that you have to provide the JAR which contains it explicitly. The artifact is always available and is not looked up in a repository."/>
+		<conf name="sources" visibility="public" description="this configuration contains the source artifact of this module, if any."/>
+		<conf name="javadoc" visibility="public" description="this configuration contains the javadoc artifact of this module, if any."/>
+		<conf name="optional" visibility="public" description="contains all optional dependencies"/>
+	</configurations>
+	<publications>
+		<artifact name="hibernate-validator" type="jar" ext="jar" conf="master"/>
+	</publications>
+	<dependencies>
+		<dependency org="javax.validation" name="validation-api" rev="1.0.0.GA" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
+		<dependency org="org.jboss.logging" name="jboss-logging" rev="3.1.0.CR2" force="true" conf="compile->compile(*),master(*);runtime->runtime(*)"/>
+		<dependency org="org.hibernate.javax.persistence" name="hibernate-jpa-2.0-api" rev="1.0.1.Final" force="true" conf="optional->compile(*),master(*)"/>
+		<dependency org="joda-time" name="joda-time" rev="1.6" force="true" conf="optional->compile(*),master(*)"/>
+		<dependency org="org.jsoup" name="jsoup" rev="1.6.1" force="true" conf="optional->compile(*),master(*)"/>
+		<dependency org="org.testng" name="testng" rev="5.14.2" force="true" conf="test->runtime(*),master(*)"/>
+		<dependency org="log4j" name="log4j" rev="1.2.16" force="true" conf="test->runtime(*),master(*)"/>
+		<dependency org="org.easymock" name="easymock" rev="3.0" force="true" conf="test->runtime(*),master(*)"/>
+		<dependency org="org.hibernate" name="hibernate-entitymanager" rev="3.6.0.Final" force="true" conf="test->runtime(*),master(*)"/>
+		<dependency org="com.h2database" name="h2" rev="1.2.124" force="true" conf="test->runtime(*),master(*)"/>
+		<dependency org="org.codehaus.groovy" name="groovy" rev="1.8.3" force="true" conf="test->runtime(*),master(*)"/>
+		<override org="org.codehaus.groovy" module="groovy" matcher="exact" rev="1.8.3"/>
+		<override org="org.hibernate" module="hibernate-validator" matcher="exact" rev="4.3.0.Final"/>
+		<override org="org.hibernate.javax.persistence" module="hibernate-jpa-2.0-api" matcher="exact" rev="1.0.1.Final"/>
+		<override org="log4j" module="log4j" matcher="exact" rev="1.2.16"/>
+		<override org="org.jsoup" module="jsoup" matcher="exact" rev="1.6.1"/>
+		<override org="org.hibernate" module="hibernate-validator-annotation-processor" matcher="exact" rev="4.3.0.Final"/>
+		<override org="javax.validation" module="validation-api" matcher="exact" rev="1.0.0.GA"/>
+		<override org="junit" module="junit" matcher="exact" rev="4.8.2"/>
+		<override org="org.easymock" module="easymock" matcher="exact" rev="3.0"/>
+		<override org="joda-time" module="joda-time" matcher="exact" rev="1.6"/>
+		<override org="org.testng" module="testng" matcher="exact" rev="5.14.2"/>
+		<override org="com.h2database" module="h2" matcher="exact" rev="1.2.124"/>
+		<override org="org.hibernate" module="hibernate-entitymanager" matcher="exact" rev="3.6.0.Final"/>
+		<override org="org.jboss.logging" module="jboss-logging" matcher="exact" rev="3.1.0.CR2"/>
+	</dependencies>
+</ivy-module>
