@@ -7,4 +7,3 @@
 version=${PLAY_VERSION:2.1.3}
 
 mkdir ${OPENSHIFT_PLAY2JAVA_DIR}logs
-mkdir ${OPENSHIFT_PLAY2JAVA_DIR}tmp
