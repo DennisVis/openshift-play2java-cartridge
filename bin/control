@@ -4,12 +4,12 @@ source $OPENSHIFT_CARTRIDGE_SDK_BASH
 
 function start {
   echo "Starting Play 2 Java cartridge"
-  /hooks/start
+  ../hooks/start
 }
 
 function stop {
   echo "Stopping Play 2 Java cartridge"
-  /hooks/stop
+  ../hooks/stop
 }
 
 function catchall {
