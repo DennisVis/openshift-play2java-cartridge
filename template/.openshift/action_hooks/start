@@ -13,7 +13,7 @@ fi
 
 LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
 
-APP_COMMAND="${OPENSHIFT_REPO_DIR} play clean compile stage start $PLAY_PARAMS "\
+APP_COMMAND="${OPENSHIFT_REPO_DIR} ${OPENSHIFT_DATA_DIR}playframework/play clean compile stage start $PLAY_PARAMS "\
 "-Dhttp.port=8080 "\
 "-Dhttp.address=${OPENSHIFT_INTERNAL_IP} "\
 "-Dconfig.resource=openshift.conf"
