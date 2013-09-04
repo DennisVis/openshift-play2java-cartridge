@@ -5,7 +5,7 @@
 
 
 # loads $PLAY_PARAMS
-. ${OPENSHIFT_REPO_DIR}.openshift/action_hooks/load_config
+. ${OPENSHIFT_PLAY2JAVA_DIR}.openshift/action_hooks/load_config
 
 if [[ ! $? -eq 0 ]]; then
 	exit $?
