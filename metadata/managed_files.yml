@@ -2,7 +2,5 @@
 locked_files:
 - env/
 - env/*
-- bin/
-- bin/*
 processed_templates:
 - '**/*.erb'
