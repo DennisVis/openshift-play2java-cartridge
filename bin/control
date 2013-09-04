@@ -4,8 +4,8 @@ STOPTIMEOUT=10
 FMT="%a %b %d %Y %H:%M:%S GMT%z (%Z)"
 
 function is_play_service_running() {
-    if [ -f $OPENSHIFT_PLAY2JAVA_DIR/pid/play.pid ]; then
-        play_pid=$( cat $OPENSHIFT_PLAY2JAVA_DIR/pid/play.pid 2> /dev/null )
+    if [ -f ${OPENSHIFT_PLAY2JAVA_DIR}pid/play.pid ]; then
+        play_pid=$( cat ${OPENSHIFT_PLAY2JAVA_DIR}pid/play.pid 2> /dev/null )
         if `ps --pid $play_pid 2>&1`; then
             return 0
         fi
@@ -24,18 +24,18 @@ function status() {
 
 
 function start() {
-    logf="$OPENSHIFT_PLAY2JAVA_LOG_DIR/play.log"
+    logf="${OPENSHIFT_PLAY2JAVA_LOG_DIR}play.log"
     pushd "$OPENSHIFT_PLAY2JAVA_DIR" > /dev/null
     {
         if [ -f "versions/play-$PLAY_VERSION" ]; then
             echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME' from versions/play-$PLAY_VERSION..."
 
-            nohup "versions/$PLAY_VERSION/play" -c "${OPENSHIFT_REPO_DIR}.openshift/action_hooks/start" >> $logf 2>&1 &
+            nohup "versions/play-$PLAY_VERSION/play" -c "${OPENSHIFT_REPO_DIR}.openshift/action_hooks/start" >> $logf 2>&1 &
 
             ret=$?
             npid=$!
             if [ $ret -eq 0 ]; then
-                echo "$npid" > "$OPENSHIFT_PLAY2JAVA_DIR/pid/play.pid"
+                echo "$npid" > "${OPENSHIFT_PLAY2JAVA_DIR}pid/play.pid"
             else
                 echo "Application '$OPENSHIFT_APP_NAME' failed to start - $ret" 1>&2
                 exit $ret
@@ -47,12 +47,12 @@ function start() {
 }
 
 function stop() {
-    if [ -f $OPENSHIFT_PLAY2JAVA_DIR/pid/play.pid ]; then
-        play_pid=$( cat $OPENSHIFT_PLAY2JAVA_DIR/pid/play.pid 2> /dev/null )
+    if [ -f ${OPENSHIFT_PLAY2JAVA_DIR}pid/play.pid ]; then
+        play_pid=$( cat ${OPENSHIFT_PLAY2JAVA_DIR}pid/play.pid 2> /dev/null )
     fi
 
     if [ -n "$play_pid" ]; then
-        logf="$OPENSHIFT_PLAY2JAVA_LOG_DIR/play.log"
+        logf="${OPENSHIFT_PLAY2JAVA_LOG_DIR}play.log"
         echo "`date +"$FMT"`: Stopping application '$OPENSHIFT_APP_NAME' ..." >> $logf
         /bin/kill $play_pid
         ret=$?
@@ -88,8 +88,8 @@ function dist() {
 function tidy() {
   client_message "Emptying log dir: $OPENSHIFT_PLAY2JAVA_LOG_DIR"
   shopt -s dotglob
-  rm -rf $OPENSHIFT_PLAY2JAVA_DIR/logs/*
-  rm -rf $OPENSHIFT_PLAY2JAVA_DIR/tmp/*
+  rm -rf ${OPENSHIFT_PLAY2JAVA_DIR}logs/*
+  rm -rf ${OPENSHIFT_PLAY2JAVA_DIR}tmp/*
 }
 
 #
