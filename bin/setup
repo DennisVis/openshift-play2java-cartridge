@@ -1,0 +1,3 @@
+#!/bin/bash -eu
+
+(cd /usr/sbin && git clone https://github.com/playframework/playframework)
