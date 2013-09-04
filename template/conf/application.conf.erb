@@ -79,4 +79,4 @@ logger.application=DEBUG
 
 # openshift action_hooks scripts configuration
 # ~~~~~
-openshift.play.params="-DapplyEvolutions.default=true"
+openshift.play.params="-DapplyEvolutions.default=true -Xms128M -Xmx512M -XX:MaxPermSize=256M"
