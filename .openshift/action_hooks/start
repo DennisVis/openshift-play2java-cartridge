@@ -17,7 +17,8 @@ cd ${OPENSHIFT_REPO_DIR} && ${OPENSHIFT_PLAY2JAVA_DIR}versions/play-${PLAY_VERSI
 
 APP_COMMAND="${OPENSHIFT_REPO_DIR}target/start $PLAY_PARAMS "\
 "-Dhttp.port=${OPENSHIFT_PLAY2JAVA_PORT} "\
-"-Dhttp.address=${OPENSHIFT_PLAY2JAVA_IP}"
+"-Dhttp.address=${OPENSHIFT_PLAY2JAVA_IP} "\
+"-Dconfig.resource=openshift.conf"
 
 echo $APP_COMMAND &>> $LOG_FILE
 nohup bash -c "${APP_COMMAND} &>> ${LOG_FILE} 2>&1" &> /dev/null &

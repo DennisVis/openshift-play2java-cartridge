@@ -5,5 +5,4 @@
 # could be python, php, ruby, etc.
 
 version=${PLAY_VERSION:2.1.3}
-
 mkdir ${OPENSHIFT_PLAY2JAVA_DIR}logs
