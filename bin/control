@@ -28,7 +28,7 @@ function start() {
 }
 
 function stop() {
-    ${OPENSHIFT_PLAY2JAVA_DIR}.openshift/action_hooks/stop
+    ${OPENSHIFT_PLAY2JAVA_DIR}.openshift/action_hooks/start
 }
 
 function restart() {

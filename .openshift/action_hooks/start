@@ -13,7 +13,7 @@ fi
 
 LOG_FILE="${OPENSHIFT_PLAY2JAVA_LOG_DIR}play.log"
 
-cd ${OPENSHIFT_REPO_DIR} && ${OPENSHIFT_PLAY2JAVA_DIR}versions/play-${PLAY_VERSION}/play clean compile stage
+cd ${OPENSHIFT_REPO_DIR} && ${OPENSHIFT_PLAY2JAVA_DIR}versions/play-${PLAY_VERSION}/play clean compile stage &>> $LOG_FILE
 
 APP_COMMAND="${OPENSHIFT_REPO_DIR}target/start $PLAY_PARAMS "\
 "-Dhttp.port=${OPENSHIFT_PLAY2JAVA_PORT} "\
