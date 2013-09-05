@@ -1,9 +1,0 @@
-#!/bin/bash
-# This is a simple build script and will be executed on your CI system if 
-# available.  Otherwise it will execute while your application is stopped
-# before the deploy step.  This script gets executed directly, so it
-# could be python, php, ruby, etc.
-
-LOG_FILE="${OPENSHIFT_PLAY2JAVA_LOG_DIR}play.log"
-
-nohup bash -c "cd ${OPENSHIFT_REPO_DIR} && ${OPENSHIFT_PLAY2JAVA_DIR}versions/play-${PLAY_VERSION}/play clean compile &>> ${LOG_FILE}"

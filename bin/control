@@ -15,23 +15,12 @@ function is_play_service_running() {
     return 1
 }
 
-function kill_app {
-	COMMAND="$1"
-	# try 5 times to kill it
-	for c in `seq 1 5`; do
-		echo "Trying to kill proccess, attempt number $c" >> $LOG_FILE
-		echo "$COMMAND" >> $LOG_FILE
-		bash -c "$COMMAND &>> $LOG_FILE 2>&1" &> /dev/null
-		sleep $c
-		#killed it
-		if [[ -z `ps -A | grep ' java$'` ]]; then
-			if [[ -f "RUNNING_PID" ]]; then
-				rm RUNNING_PID
-			fi
-			popd > /dev/null
-			exit 0
-		fi
-	done
+function status() {
+    if is_play_service_running; then
+        client_result "Application is running"
+    else
+        client_result "Application is not running"
+    fi
 }
 
 function load_config {
@@ -67,50 +56,60 @@ function load_config {
 	return 0
 }
 
-function status() {
-    if is_play_service_running; then
-        client_result "Application is running"
-    else
-        client_result "Application is not running"
-    fi
-}
-
-
 function start() {
-    	# loads $PLAY_PARAMS
-	load_config
+    	
+	if [ -f ${OPENSHIFT_REPO_DIR}target ]; then
+		echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME' from versions/$PLAY_VERSION..."		
 
-	LOG_FILE="${OPENSHIFT_PLAY2JAVA_LOG_DIR}play.log"
+		# load $PLAY_PARAMS
+		load_config
 
-	if [ ! -f ${OPENSHIFT_REPO_DIR}target/start ]; then
-		echo "Info: Application not deployed yet, deploying now" >> $LOG_FILE		
-		nohup bash -c "${OPENSHIFT_PLAY2JAVA_DIR}.openshift/action_hooks/build &>> ${LOG_FILE}"
-		nohup bash -c "${OPENSHIFT_PLAY2JAVA_DIR}.openshift/action_hooks/deploy &>> ${LOG_FILE}"
-	fi
-
-	APP_COMMAND="${OPENSHIFT_REPO_DIR}target/start $PLAY_PARAMS "\
+		APP_COMMAND="${OPENSHIFT_REPO_DIR}target/start $PLAY_PARAMS "\
 		"-Dhttp.port=${OPENSHIFT_PLAY2JAVA_PORT} "\
 		"-Dhttp.address=${OPENSHIFT_PLAY2JAVA_IP} "\
 		"-Dconfig.resource=openshift.conf"
 
-	echo $APP_COMMAND &>> $LOG_FILE
-	nohup bash -c "${APP_COMMAND} &>> ${LOG_FILE} 2>&1" &> /dev/null &
+		echo $APP_COMMAND &>> $LOG_FILE
+		nohup bash -c "${APP_COMMAND} &>> ${LOG_FILE} 2>&1" &> /dev/null &
+	else
+            echo "WARN: Could not find the compiled application, the target folder does not exist. Will not start"
+        fi
+}
+
+function kill_app {
+	COMMAND="$1"
+	# try 5 times to kill it
+	for c in `seq 1 5`; do
+		echo "Trying to kill proccess, attempt number $c" >> $LOG_FILE
+		echo "$COMMAND" >> $LOG_FILE
+		bash -c "$COMMAND &>> $LOG_FILE 2>&1" &> /dev/null
+		sleep $c
+		#killed it
+		if [[ -z `ps -A | grep ' java$'` ]]; then
+			if is_play_service_running; then
+				rm ${OPENSHIFT_REPO_DIR}RUNNING_PID
+			fi
+			popd > /dev/null
+			exit 0
+		fi
+	done
 }
 
 function stop() {
+
 	pushd "$OPENSHIFT_PLAY2JAVA_DIR" > /dev/null
 
 	#kill play if it was running
-	if [[ -f "RUNNING_PID" ]]; then
+	if is_play_service_running; then
 
-		pid=`cat RUNNING_PID`
+		play_pid=$( cat ${OPENSHIFT_REPO_DIR}RUNNING_PID 2> /dev/null )
 		echo "Stopping play application" >> $LOG_FILE
 
-		if [[ -n $pid ]]; then
+		if [[ -n $play_pid ]]; then
 			#try to kill it nicely
-			kill_app "kill -SIGTERM $pid"
+			kill_app "kill -SIGTERM $play_pid"
 			#try to kill it harshly
-			kill_app "kill -SIGKILL $pid"
+			kill_app "kill -SIGKILL $play_pid"
 		fi
 	fi
 
@@ -125,9 +124,7 @@ function stop() {
 
 	#couldn't kill it
 	if [[ -n `ps -A | grep java` ]]; then
-		echo "Error: could not stop play application, error executing 'pkill java'" >> $LOG_FILE
-		popd
-		exit 1
+		echo "Error: could not stop play application, error executing 'pkill java'. Use force-stop to kill."
 	fi
 
 	popd > /dev/null
@@ -136,6 +133,10 @@ function stop() {
 function restart() {
     stop
     start
+}
+
+function build() {
+	nohup bash -c "cd ${OPENSHIFT_REPO_DIR} && ${OPENSHIFT_PLAY2JAVA_DIR}versions/play-${PLAY_VERSION}/play clean compile stage &>> ${LOG_FILE}"
 }
 
 function tidy() {
@@ -151,7 +152,7 @@ function tidy() {
 
 # Ensure arguments.
 if ! [ $# -eq 1 ]; then
-    echo "Usage: $0 [start|restart|stop|status|tidy]"
+    echo "Usage: $0 [start|restart|stop|status]"
     exit 1
 fi
 
@@ -164,6 +165,7 @@ case "$1" in
     restart)    	 restart     ;;
     stop)  		 stop        ;;
     status)              status      ;;
+    build)               build       ;;
     tidy)                tidy        ;;
     *) exit 0;
 esac

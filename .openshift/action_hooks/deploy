@@ -1,9 +1,0 @@
-#!/bin/bash
-# This deploy hook gets executed after dependencies are resolved and the
-# build hook has been run but before the application has been started back
-# up again.  This script gets executed directly, so it could be python, php,
-# ruby, etc.
-
-LOG_FILE="${OPENSHIFT_PLAY2JAVA_LOG_DIR}play.log"
-
-nohup bash -c "cd ${OPENSHIFT_REPO_DIR} && ${OPENSHIFT_PLAY2JAVA_DIR}versions/play-${PLAY_VERSION}/play stage &>> ${LOG_FILE}"
