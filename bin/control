@@ -2,25 +2,24 @@
 
 STOPTIMEOUT=10
 FMT="%a %b %d %Y %H:%M:%S GMT%z (%Z)"
-LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
 
 function is_play_service_running() {
-    if [ -f ${OPENSHIFT_REPO_DIR}RUNNING_PID ]; then
-        play_pid=$( cat ${OPENSHIFT_REPO_DIR}RUNNING_PID 2> /dev/null )
-        if `ps --pid $play_pid 2>&1`; then
-            return 0
-        fi
+  if [ -f ${OPENSHIFT_REPO_DIR}RUNNING_PID ]; then
+    play_pid=$( cat ${OPENSHIFT_REPO_DIR}RUNNING_PID 2> /dev/null )
+    if `ps --pid $play_pid 2>&1`; then
+      return 0
     fi
+  fi
 
-    return 1
+  return 1
 }
 
 function status() {
-    if is_play_service_running; then
-        client_result "Application is running"
-    else
-        client_result "Application is not running"
-    fi
+  if is_play_service_running; then
+    client_result "Application is running"
+  else
+    client_result "Application is not running"
+  fi
 }
 
 function load_config {
@@ -59,6 +58,9 @@ function load_config {
 function start() {
     	
 	if [ -f ${OPENSHIFT_REPO_DIR}target ]; then
+		
+		LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
+
 		echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME' from versions/$PLAY_VERSION..."		
 
 		# load $PLAY_PARAMS
@@ -71,31 +73,37 @@ function start() {
 
 		echo $APP_COMMAND &>> $LOG_FILE
 		nohup bash -c "${APP_COMMAND} &>> ${LOG_FILE} 2>&1" &> /dev/null &
-	else
-            echo "WARN: Could not find the compiled application, the target folder does not exist. Will not start"
-        fi
+		
+  else
+    echo "WARN: Could not find the compiled application, the target folder does not exist. Will not start"
+  fi
 }
 
 function kill_app {
+
 	COMMAND="$1"
+	LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
+
 	# try 5 times to kill it
 	for c in `seq 1 5`; do
+	
 		echo "Trying to kill proccess, attempt number $c" >> $LOG_FILE
 		echo "$COMMAND" >> $LOG_FILE
 		bash -c "$COMMAND &>> $LOG_FILE 2>&1" &> /dev/null
 		sleep $c
+		
 		#killed it
 		if [[ -z `ps -A | grep ' java$'` ]]; then
 			if is_play_service_running; then
 				rm ${OPENSHIFT_REPO_DIR}RUNNING_PID
 			fi
-			popd > /dev/null
-			exit 0
 		fi
 	done
 }
 
 function stop() {
+
+	LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
 
 	pushd "$OPENSHIFT_PLAY2JAVA_DIR" > /dev/null
 
@@ -111,23 +119,25 @@ function stop() {
 			#try to kill it harshly
 			kill_app "kill -SIGKILL $play_pid"
 		fi
+
+		# If it survived, try to kill java
+		if [[ -n `ps -A | grep java` ]]; then
+			echo "Stopping java proccess" >> $LOG_FILE
+			#try to kill it nicely
+			kill_app "pkill -SIGTERM java"
+			#try to kill it harshly
+			kill_app "pkill -SIGKILL java"
+		fi
+
+		# Couldn't kill it
+		if [[ -n `ps -A | grep java` ]]; then
+			echo "Error: could not stop play application, error executing 'pkill java'. Use force-stop to kill."
+		fi
+		
+	else 
+		echo "No application running..."
 	fi
 
-	#it survived, try to kill java
-	if [[ -n `ps -A | grep java` ]]; then
-		echo "Stopping java proccess" >> $LOG_FILE
-		#try to kill it nicely
-		kill_app "pkill -SIGTERM java"
-		#try to kill it harshly
-		kill_app "pkill -SIGKILL java"
-	fi
-
-	#couldn't kill it
-	if [[ -n `ps -A | grep java` ]]; then
-		echo "Error: could not stop play application, error executing 'pkill java'. Use force-stop to kill."
-	fi
-
-	popd > /dev/null
 }
 
 function restart() {
@@ -136,7 +146,8 @@ function restart() {
 }
 
 function build() {
-	nohup bash -c "cd ${OPENSHIFT_REPO_DIR} && ${OPENSHIFT_PLAY2JAVA_DIR}versions/play-${PLAY_VERSION}/play clean compile stage &>> ${LOG_FILE}"
+  LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
+  nohup bash -c "cd ${OPENSHIFT_REPO_DIR} && ${OPENSHIFT_PLAY2JAVA_DIR}versions/play-${PLAY_VERSION}/play clean compile stage &>> ${LOG_FILE} 2>&1" &> /dev/null
 }
 
 function tidy() {
@@ -152,8 +163,8 @@ function tidy() {
 
 # Ensure arguments.
 if ! [ $# -eq 1 ]; then
-    echo "Usage: $0 [start|restart|stop|status]"
-    exit 1
+  echo "Usage: $0 [start|restart|stop|status]"
+  exit 1
 fi
 
 # Source utility functions.
@@ -161,12 +172,12 @@ source $OPENSHIFT_CARTRIDGE_SDK_BASH
 
 # Handle commands.
 case "$1" in
-    start)               start       ;;
-    restart)    	 restart     ;;
-    stop)  		 stop        ;;
-    status)              status      ;;
-    build)               build       ;;
-    tidy)                tidy        ;;
-    *) exit 0;
+  start)     start       ;;
+  restart)   restart     ;;
+  stop)  		 stop        ;;
+  status)    status      ;;
+  build)     build       ;;
+  tidy)      tidy        ;;
+  *) exit 0;
 esac
 
