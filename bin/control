@@ -24,11 +24,11 @@ function status() {
 
 
 function start() {
-    ${OPENSHIFT_PLAY2JAVA_DIR}.openshift/action_hooks/start
+    #${OPENSHIFT_PLAY2JAVA_DIR}.openshift/action_hooks/start
 }
 
 function stop() {
-    ${OPENSHIFT_PLAY2JAVA_DIR}.openshift/action_hooks/start
+    #${OPENSHIFT_PLAY2JAVA_DIR}.openshift/action_hooks/start
 }
 
 function restart() {
