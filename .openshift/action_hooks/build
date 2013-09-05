@@ -4,5 +4,6 @@
 # before the deploy step.  This script gets executed directly, so it
 # could be python, php, ruby, etc.
 
-version=${PLAY_VERSION:2.1.3}
-mkdir ${OPENSHIFT_PLAY2JAVA_DIR}logs
+LOG_FILE="${OPENSHIFT_PLAY2JAVA_LOG_DIR}play.log"
+
+nohup bash -c "cd ${OPENSHIFT_REPO_DIR} && ${OPENSHIFT_PLAY2JAVA_DIR}versions/play-${PLAY_VERSION}/play clean compile &>> ${LOG_FILE}"
