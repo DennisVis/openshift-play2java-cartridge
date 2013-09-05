@@ -13,7 +13,7 @@ source "${OPENSHIFT_PLAY2JAVA_DIR}lib/util"
 set -u
 
 echo "$version" > ${OPENSHIFT_PLAY2JAVA_DIR}env/PLAY_VERSION
-< /dev/urandom tr -dc [:graph:] | head -c64 > ${OPENSHIFT_PLAY2JAVA_DIR}env/CRYPTO_KEY
+< /dev/urandom tr -dc a-zA-Z0-9/\!@#$%*()-_+=~ | head -c64 > ${OPENSHIFT_PLAY2JAVA_DIR}env/CRYPTO_KEY
 
 ###
 pushd $OPENSHIFT_PLAY2JAVA_DIR > /dev/null
