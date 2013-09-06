@@ -7,7 +7,7 @@ esac
 
 # Parse arguments
 source "${OPENSHIFT_PLAY2JAVA_DIR}lib/util"
-parse_args $@
+#parse_args $@
 
 # Don't set -u until after the above arg parsing is complete
 set -u
