@@ -17,7 +17,7 @@ echo ${OPENSHIFT_PLAY2JAVA_DIR}/versions/play-$version > ${OPENSHIFT_PLAY2JAVA_D
 # Build application
 
 # Make sure build process does not take more memory then allowed
-export _JAVA_OPTIONS="-Xms502m -Xmx502m"
+export JAVA_OPTIONS="-Xms502m -Xmx502m"
 
 echo
   (cd "${OPENSHIFT_REPO_DIR}"; ${OPENSHIFT_PLAY2JAVA_DIR}/versions/play-$version/play clean compile stage) >> ${OPENSHIFT_PLAY2JAVA_DIR}logs/play.log
