@@ -15,7 +15,7 @@ function is_play_service_running() {
 }
 
 function status() {
-  if is_play_service_running; then
+  if [ is_play_service_running ]; then
     client_result "Application is running"
   else
     client_result "Application is not running"
@@ -94,7 +94,7 @@ function kill_app {
 		
 		#killed it
 		if [[ -z `ps -A | grep ' java$'` ]]; then
-			if is_play_service_running; then
+			if [ is_play_service_running ]; then
 				rm ${OPENSHIFT_REPO_DIR}RUNNING_PID
 			fi
 		fi
@@ -141,26 +141,26 @@ function stop() {
 }
 
 function restart() {
-    stop
-    start
+  stop
+  start
 }
 
 function build() {
   LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
   echo "`date +"$FMT"`: Building application '$OPENSHIFT_APP_NAME'..."
-  nohup bash -c "cd ${OPENSHIFT_REPO_DIR} && ${OPENSHIFT_PLAY2JAVA_DIR}versions/play-${PLAY_VERSION}/play clean compile &>> ${LOG_FILE} 2>&1" &> /dev/null
+  echo (cd ${OPENSHIFT_REPO_DIR}; play clean compile)
 }
 
 function deploy() {
   LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
   echo "`date +"$FMT"`: Deploying application '$OPENSHIFT_APP_NAME'..."
-  nohup bash -c "cd ${OPENSHIFT_REPO_DIR} && ${OPENSHIFT_PLAY2JAVA_DIR}versions/play-${PLAY_VERSION}/play dist &>> ${LOG_FILE} 2>&1" &> /dev/null
+  echo (cd ${OPENSHIFT_REPO_DIR}; play stage)
 }
 
 function tidy() {
   client_message "Emptying log dir: $OPENSHIFT_PLAY2JAVA_LOG_DIR"
   shopt -s dotglob
-  rm -rf ${OPENSHIFT_PLAY2JAVA_DIR}logs/*
+  rm -rf ${OPENSHIFT_PLAY2JAVA_DIR}*
   rm -rf ${OPENSHIFT_PLAY2JAVA_DIR}tmp/*
 }
 
@@ -170,7 +170,7 @@ function tidy() {
 
 # Ensure arguments.
 if ! [ $# -eq 1 ]; then
-  echo "Usage: $0 [start|restart|stop|status]"
+  echo "Usage: $0 [start|restart|graceful|graceful-stop|stop|status]"
   exit 1
 fi
 
@@ -179,13 +179,13 @@ source $OPENSHIFT_CARTRIDGE_SDK_BASH
 
 # Handle commands.
 case "$1" in
-  start)     start       ;;
-  restart)   restart     ;;
-  stop)  		 stop        ;;
-  status)    status      ;;
-  build)     build       ;;
-  deploy)    deploy      ;;
-  tidy)      tidy        ;;
+  start)                start       ;;
+  restart|graceful)     restart     ;;
+  graceful-stop|stop)   stop        ;;
+  status)               status      ;;
+  build)                build       ;;
+  deploy)               deploy      ;;
+  tidy)                 tidy        ;;
   *) exit 0;
 esac
 
