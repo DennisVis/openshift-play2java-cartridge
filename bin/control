@@ -162,7 +162,7 @@ function build() {
   echo " -- Staging -- "
   echo 
     (cd "${OPENSHIFT_REPO_DIR}"; play stage) >> "${LOG_FILE}"
-  echo "Build complete."
+  echo "Build complete"
 }
 
 function tidy() {
