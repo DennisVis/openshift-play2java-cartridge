@@ -2,7 +2,7 @@
 
 STOPTIMEOUT=10
 FMT="%a %b %d %Y %H:%M:%S GMT%z (%Z)"
-LOG_FILE="${OPENSHIFT_PLAY2LOG_DIR}play.log"
+LOG_FILE="${OPENSHIFT_PLAY2JAVA_LOG_DIR}play.log"
 
 function is_play_service_running() {
   if [ -f ${OPENSHIFT_REPO_DIR}RUNNING_PID ]; then
@@ -158,14 +158,16 @@ function build() {
   export _JAVA_OPTIONS="-Xms502m -Xmx502m"
     
   {   
+    echo " -- Cleaning -- "
     echo 
-      " -- Cleaning -- "
       (cd "${OPENSHIFT_REPO_DIR}"; play clean) 
-      " -- Compiling -- "
+    echo " -- Compiling -- "
+    echo 
       (cd "${OPENSHIFT_REPO_DIR}"; play compile)
-      " -- Staging -- "
+    echo " -- Staging -- "
+    echo 
       (cd "${OPENSHIFT_REPO_DIR}"; play stage)
-      "Build complete."
+    echo "Build complete."
   } >> "${LOG_FILE}"
 }
 
