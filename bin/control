@@ -151,7 +151,7 @@ function build() {
   echo "`date +"$FMT"`: Building application '$OPENSHIFT_APP_NAME'..."
   
   # Make sure build process does not take more memory then allowed
-  export JAVA_OPTIONS="-Xms502m -Xmx502m"
+  export JAVA_OPTS="-Xms502m -Xmx502m"
   
   echo " -- Cleaning -- "
   echo (cd "${OPENSHIFT_REPO_DIR}"; play clean) | tee -a "${LOG_FILE}"
