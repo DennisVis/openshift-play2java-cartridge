@@ -61,11 +61,7 @@ function start() {
 
   # load $PLAY_PARAMS
 	load_config
-
-  if [[ ! $? -eq 0 ]]; then
-	  exit $?
-  fi
-    	
+	
 	if [ -f ${OPENSHIFT_REPO_DIR}target/start ]; then		
 		
 		chmod +x ${OPENSHIFT_REPO_DIR}target/start
@@ -156,19 +152,17 @@ function build() {
   
   # Make sure build process does not take more memory then allowed
   export _JAVA_OPTIONS="-Xms502m -Xmx502m"
-    
-  {   
-    echo " -- Cleaning -- "
+  
+    echo " -- Cleaning -- " >> "${LOG_FILE}"
     echo 
-      (cd "${OPENSHIFT_REPO_DIR}"; play clean) 
-    echo " -- Compiling -- "
+      (cd "${OPENSHIFT_REPO_DIR}"; play clean) >> "${LOG_FILE}"
+    echo " -- Compiling -- " >> "${LOG_FILE}"
     echo 
-      (cd "${OPENSHIFT_REPO_DIR}"; play compile)
+      (cd "${OPENSHIFT_REPO_DIR}"; play compile) >> "${LOG_FILE}"
     echo " -- Staging -- "
     echo 
-      (cd "${OPENSHIFT_REPO_DIR}"; play stage)
-    echo "Build complete."
-  } >> "${LOG_FILE}"
+      (cd "${OPENSHIFT_REPO_DIR}"; play stage) >> "${LOG_FILE}"
+    echo "Build complete." >> "${LOG_FILE}"
 }
 
 function tidy() {
