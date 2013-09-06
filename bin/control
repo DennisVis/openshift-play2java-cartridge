@@ -153,16 +153,16 @@ function build() {
   # Make sure build process does not take more memory then allowed
   export _JAVA_OPTIONS="-Xms502m -Xmx502m"
   
-    echo " -- Cleaning -- " >> "${LOG_FILE}"
+    echo " -- Cleaning -- "
     echo 
       (cd "${OPENSHIFT_REPO_DIR}"; play clean) >> "${LOG_FILE}"
-    echo " -- Compiling -- " >> "${LOG_FILE}"
+    echo " -- Compiling -- "
     echo 
       (cd "${OPENSHIFT_REPO_DIR}"; play compile) >> "${LOG_FILE}"
     echo " -- Staging -- "
     echo 
       (cd "${OPENSHIFT_REPO_DIR}"; play stage) >> "${LOG_FILE}"
-    echo "Build complete." >> "${LOG_FILE}"
+    echo "Build complete."
 }
 
 function tidy() {
