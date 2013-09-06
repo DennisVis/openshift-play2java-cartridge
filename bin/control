@@ -56,6 +56,10 @@ function load_config {
 }
 
 function start() {
+
+  if [ ! -f ${OPENSHIFT_REPO_DIR}target/start ]; then
+    build  
+  fi
     	
 	if [ -f ${OPENSHIFT_REPO_DIR}target/start ]; then
 		
@@ -146,7 +150,8 @@ function build() {
   LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
   echo "`date +"$FMT"`: Building application '$OPENSHIFT_APP_NAME'..."
   echo 
-    (cd "${OPENSHIFT_REPO_DIR}"; play clean stage)
+    (cd "${OPENSHIFT_REPO_DIR}"; play clean stage) 
+    >> "${LOG_FILE}"
 }
 
 function tidy() {
