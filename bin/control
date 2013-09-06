@@ -66,12 +66,12 @@ function start() {
 		
 		chmod +x ${OPENSHIFT_REPO_DIR}target/start
 
-		echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME'..." >> "${LOG_FILE}"			
+		echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME'..." | tee -a "${LOG_FILE}"			
 
 		APP_COMMAND="${OPENSHIFT_REPO_DIR}target/start $PLAY_PARAMS -Dhttp.port=${OPENSHIFT_PLAY2JAVA_PORT} -Dhttp.address=${OPENSHIFT_PLAY2JAVA_IP} -Dconfig.resource=openshift.conf"
 
-		echo $APP_COMMAND &>> $LOG_FILE
-		nohup bash -c "${APP_COMMAND} &>> ${LOG_FILE} 2>&1" &> /dev/null &
+		echo $APP_COMMAND | tee -a $LOG_FILE
+		nohup bash -c "${APP_COMMAND} 2>&1 | tee -a ${LOG_FILE}" &> /dev/null &
 		
   else
     echo "WARN: Could not find the compiled application, will not start"
@@ -85,7 +85,7 @@ function kill_app {
 	# try 5 times to kill it
 	for c in `seq 1 5`; do
 	
-		echo "Trying to kill proccess, attempt number $c" >> $LOG_FILE
+		echo "Trying to kill proccess, attempt number $c" | tee -a $LOG_FILE
 		echo "$COMMAND" >> $LOG_FILE
 		bash -c "$COMMAND &>> $LOG_FILE 2>&1" &> /dev/null
 		sleep $c
@@ -107,7 +107,7 @@ function stop() {
 	if is_play_service_running; then
 
 		play_pid=$( cat ${OPENSHIFT_REPO_DIR}RUNNING_PID 2> /dev/null )
-		echo "Stopping play application" >> $LOG_FILE
+		echo "Stopping play application" | tee -a $LOG_FILE
 
 		if [[ -n $play_pid ]]; then
 			#try to kill it nicely
@@ -118,7 +118,7 @@ function stop() {
 
 		# If it survived, try to kill java
 		if [[ -n `ps -A | grep java` ]]; then
-			echo "Stopping java proccess" >> $LOG_FILE
+			echo "Stopping java proccess" | tee -a $LOG_FILE
 			#try to kill it nicely
 			kill_app "pkill -SIGTERM java"
 			#try to kill it harshly
@@ -154,14 +154,11 @@ function build() {
   export _JAVA_OPTIONS="-Xms502m -Xmx502m"
   
   echo " -- Cleaning -- "
-  echo 
-    (cd "${OPENSHIFT_REPO_DIR}"; play clean) >> "${LOG_FILE}"
+  echo (cd "${OPENSHIFT_REPO_DIR}"; play clean) | tee -a "${LOG_FILE}"
   echo " -- Compiling -- "
-  echo 
-    (cd "${OPENSHIFT_REPO_DIR}"; play compile) >> "${LOG_FILE}"
+  echo (cd "${OPENSHIFT_REPO_DIR}"; play compile) | tee -a "${LOG_FILE}"
   echo " -- Staging -- "
-  echo 
-    (cd "${OPENSHIFT_REPO_DIR}"; play stage) >> "${LOG_FILE}"
+  echo (cd "${OPENSHIFT_REPO_DIR}"; play stage) | tee -a "${LOG_FILE}"
   echo "Build complete"
 }
 
