@@ -146,14 +146,7 @@ function build() {
   LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
   echo "`date +"$FMT"`: Building application '$OPENSHIFT_APP_NAME'..."
   echo 
-    (cd "${OPENSHIFT_REPO_DIR}"; play clean compile)
-}
-
-function deploy() {
-  LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
-  echo "`date +"$FMT"`: Deploying application '$OPENSHIFT_APP_NAME'..."
-  echo
-    (cd "${OPENSHIFT_REPO_DIR}"; play stage)
+    (cd "${OPENSHIFT_REPO_DIR}"; play clean stage)
 }
 
 function tidy() {
@@ -183,7 +176,6 @@ case "$1" in
   graceful-stop|stop)   stop        ;;
   status)               status      ;;
   build)                build       ;;
-  deploy)               deploy      ;;
   tidy)                 tidy        ;;
   *) exit 0;
 esac
