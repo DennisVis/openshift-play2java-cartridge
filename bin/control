@@ -57,11 +57,11 @@ function load_config {
 
 function start() {
     	
-	if [ -f ${OPENSHIFT_REPO_DIR}target ]; then
+	if [ -f ${OPENSHIFT_REPO_DIR}target/start ]; then
 		
 		LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
 
-		echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME' from versions/$PLAY_VERSION..."		
+		echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME'..."		
 
 		# load $PLAY_PARAMS
 		load_config
@@ -75,7 +75,7 @@ function start() {
 		nohup bash -c "${APP_COMMAND} &>> ${LOG_FILE} 2>&1" &> /dev/null &
 		
   else
-    echo "WARN: Could not find the compiled application, the target folder does not exist. Will not start"
+    echo "WARN: Could not find the compiled application, will not start"
   fi
 }
 
