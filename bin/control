@@ -2,7 +2,7 @@
 
 STOPTIMEOUT=10
 FMT="%a %b %d %Y %H:%M:%S GMT%z (%Z)"
-LOG_FILE="${OPENSHIFT_PLAY2LOG_DIR}logs/play.log"
+LOG_FILE="${OPENSHIFT_PLAY2LOG_DIR}play.log"
 
 function is_play_service_running() {
   if [ -f ${OPENSHIFT_REPO_DIR}RUNNING_PID ]; then
