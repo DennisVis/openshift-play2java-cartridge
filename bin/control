@@ -153,11 +153,14 @@ function build() {
   export JAVA_OPTS="-Xms502m -Xmx502m"
   
   echo " -- Cleaning -- "
-  echo (cd "${OPENSHIFT_REPO_DIR}"; play clean) | tee -a "${LOG_FILE}"
+  echo 
+    (cd "${OPENSHIFT_REPO_DIR}"; play clean) | tee -a "${LOG_FILE}"
   echo " -- Compiling -- "
-  echo (cd "${OPENSHIFT_REPO_DIR}"; play compile) | tee -a "${LOG_FILE}"
+  echo 
+    (cd "${OPENSHIFT_REPO_DIR}"; play compile) | tee -a "${LOG_FILE}"
   echo " -- Staging -- "
-  echo (cd "${OPENSHIFT_REPO_DIR}"; play stage) | tee -a "${LOG_FILE}"
+  echo 
+    (cd "${OPENSHIFT_REPO_DIR}"; play stage) | tee -a "${LOG_FILE}"
   echo "Build complete"
 }
 
