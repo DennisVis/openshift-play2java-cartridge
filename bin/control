@@ -148,13 +148,13 @@ function restart() {
 function build() {
   LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
   echo "`date +"$FMT"`: Building application '$OPENSHIFT_APP_NAME'..."
-  echo (cd ${OPENSHIFT_REPO_DIR}; play clean compile)
+  echo (cd "${OPENSHIFT_REPO_DIR}"; play clean compile)
 }
 
 function deploy() {
   LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
   echo "`date +"$FMT"`: Deploying application '$OPENSHIFT_APP_NAME'..."
-  echo (cd ${OPENSHIFT_REPO_DIR}; play stage)
+  echo (cd "${OPENSHIFT_REPO_DIR}"; play stage)
 }
 
 function tidy() {
