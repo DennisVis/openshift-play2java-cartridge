@@ -23,6 +23,7 @@ function status() {
 }
 
 function load_config {
+
 	# check needed vars
 	if [[ -z $OPENSHIFT_REPO_DIR ]]; then
 		echo "Error: OPENSHIFT_REPO_DIR not defined"
@@ -55,20 +56,22 @@ function load_config {
 	return 0
 }
 
-function start() {
+function start() {  
 
-  if [ ! -f ${OPENSHIFT_REPO_DIR}target/start ]; then
-    build  
+  # load $PLAY_PARAMS
+	load_config
+
+  if [[ ! $? -eq 0 ]]; then
+	  exit $?
   fi
+  
+  LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
     	
-	if [ -f ${OPENSHIFT_REPO_DIR}target/start ]; then
+	if [ -f ${OPENSHIFT_REPO_DIR}target/start ]; then		
 		
-		LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
+		chmod +x ${OPENSHIFT_REPO_DIR}target/start
 
-		echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME'..."		
-
-		# load $PLAY_PARAMS
-		load_config
+		echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME'..." >> "${LOG_FILE}"			
 
 		APP_COMMAND="${OPENSHIFT_REPO_DIR}target/start $PLAY_PARAMS -Dhttp.port=${OPENSHIFT_PLAY2JAVA_PORT} -Dhttp.address=${OPENSHIFT_PLAY2JAVA_IP} -Dconfig.resource=openshift.conf"
 
@@ -106,7 +109,7 @@ function stop() {
 
 	LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
 
-	pushd "$OPENSHIFT_PLAY2JAVA_DIR" > /dev/null
+	pushd "$OPENSHIFT_REPO_DIR" > /dev/null
 
 	#kill play if it was running
 	if is_play_service_running; then
@@ -133,7 +136,12 @@ function stop() {
 		# Couldn't kill it
 		if [[ -n `ps -A | grep java` ]]; then
 			echo "Error: could not stop play application, error executing 'pkill java'. Use force-stop to kill."
+			popd
+	    exit 1
 		fi
+		
+		popd > /dev/null
+    exit 0
 		
 	else 
 		echo "No application running..."
@@ -147,11 +155,14 @@ function restart() {
 }
 
 function build() {
+
   LOG_FILE="${OPENSHIFT_PLAY2LOG_LOG_DIR}play.log"
+  
   echo "`date +"$FMT"`: Building application '$OPENSHIFT_APP_NAME'..."
-  echo 
-    (cd "${OPENSHIFT_REPO_DIR}"; play clean stage) 
-    >> "${LOG_FILE}"
+  {
+    echo 
+      (cd "${OPENSHIFT_REPO_DIR}"; play clean stage) 
+  } >> "${LOG_FILE}"
 }
 
 function tidy() {
