@@ -7,6 +7,7 @@ esac
 
 # Create environment variables
 echo "${OPENSHIFT_PLAY2JAVA_DIR}logs" > ${OPENSHIFT_PLAY2JAVA_DIR}env/OPENSHIFT_PLAY2JAVA_LOG_DIR
+echo -n "" > ${OPENSHIFT_PLAY2JAVA_DIR}logs/play.log
 echo "$version" > ${OPENSHIFT_PLAY2JAVA_DIR}env/PLAY_VERSION
 < /dev/urandom tr -dc a-zA-Z0-9@#$%*-_+=~ | head -c64 > ${OPENSHIFT_PLAY2JAVA_DIR}env/CRYPTO_KEY
 
