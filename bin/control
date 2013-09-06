@@ -72,7 +72,7 @@ function start() {
 		nohup bash -c "${APP_COMMAND} &>> ${LOG_FILE} 2>&1" &> /dev/null &
 		
   else
-    stdout "WARN: Could not find the compiled application, will not start"
+    echo "WARN: Could not find the compiled application, will not start"
   fi
 }
 
