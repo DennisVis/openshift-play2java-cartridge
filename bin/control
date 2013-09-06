@@ -62,19 +62,19 @@ function start() {
   # load $PLAY_PARAMS
 	load_config
 	
-	# Check if the application has been built, if not build it
-	if [ ! -f ${OPENSHIFT_REPO_DIR}target/start ]; then		
-	  build
+	if [ -f ${OPENSHIFT_REPO_DIR}target/start ]; then
+			
+	  chmod +x ${OPENSHIFT_REPO_DIR}target/start
+
+	  echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME'..." | tee -a "${LOG_FILE}"			
+
+	  APP_COMMAND="${OPENSHIFT_REPO_DIR}target/start $PLAY_PARAMS -Dhttp.port=${OPENSHIFT_PLAY2JAVA_PORT} -Dhttp.address=${OPENSHIFT_PLAY2JAVA_IP} -Dconfig.resource=openshift.conf"
+
+	  echo $APP_COMMAND | tee -a $LOG_FILE
+	  nohup bash -c "${APP_COMMAND} 2>&1 | tee -a ${LOG_FILE}" &> /dev/null &
+	else 
+	  echo "WARN: Application has not been built yet, cannot start"
 	fi
-		
-	chmod +x ${OPENSHIFT_REPO_DIR}target/start
-
-	echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME'..." | tee -a "${LOG_FILE}"			
-
-	APP_COMMAND="${OPENSHIFT_REPO_DIR}target/start $PLAY_PARAMS -Dhttp.port=${OPENSHIFT_PLAY2JAVA_PORT} -Dhttp.address=${OPENSHIFT_PLAY2JAVA_IP} -Dconfig.resource=openshift.conf"
-
-	echo $APP_COMMAND | tee -a $LOG_FILE
-	nohup bash -c "${APP_COMMAND} 2>&1 | tee -a ${LOG_FILE}" &> /dev/null &
 }
 
 function kill_app {
