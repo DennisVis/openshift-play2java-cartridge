@@ -70,8 +70,8 @@ function start() {
 
 	  APP_COMMAND="${OPENSHIFT_REPO_DIR}target/start $PLAY_PARAMS -Dhttp.port=${OPENSHIFT_PLAY2JAVA_PORT} -Dhttp.address=${OPENSHIFT_PLAY2JAVA_IP} -Dconfig.resource=openshift.conf"
 
-	  echo $APP_COMMAND | tee -a $LOG_FILE
-	  nohup bash -c "${APP_COMMAND} 2>&1 | tee -a ${LOG_FILE}" &> /dev/null &
+	  bash -c "${APP_COMMAND} 2>&1 | tee -a ${LOG_FILE}" &> /dev/null &
+
 	else 
 	  echo "WARN: Application has not been built yet, cannot start"
 	fi
@@ -103,7 +103,7 @@ function stop() {
 	pushd "$OPENSHIFT_REPO_DIR" > /dev/null
 
 	#kill play if it was running
-	if is_play_service_running; then
+	if [is_play_service_running]; then
 
 		play_pid=$( cat ${OPENSHIFT_REPO_DIR}RUNNING_PID 2> /dev/null )
 		echo "Stopping play application" | tee -a $LOG_FILE
