@@ -103,7 +103,7 @@ function stop() {
 	pushd "$OPENSHIFT_REPO_DIR" > /dev/null
 
 	#kill play if it was running
-	if [is_play_service_running]; then
+	if [ is_play_service_running ]; then
 
 		play_pid=$( cat ${OPENSHIFT_REPO_DIR}RUNNING_PID 2> /dev/null )
 		echo "Stopping play application" | tee -a $LOG_FILE
