@@ -42,5 +42,3 @@ I have created this cartridge because I was fed up with the lack of Play support
 ## Thanks!
 
 I would like to thank opensas for his work on the play2-openshift-quickstart (https://github.com/opensas/play2-openshift-quickstart)! A lot of scripts I use in this cartridge are heavily based on his. 
-
-
