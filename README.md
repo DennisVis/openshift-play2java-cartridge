@@ -20,23 +20,7 @@ If you want to deploy an already existing project to OpenShift, create a new Ope
 You will not be using the locally created folder it is safe to delete this.
 Now add the git repository of the new OpenShift application as a remote repository to your existing project like so:
 
-``` 
-git add remote {repo name} {OpenShift application git url}
-``` 
-
-After that pull the remote repository into your own. Using the command below will not overwrite any of your existing files.
-
-``` 
-git pull -s recursive -X theirs {repo name} master
-``` 
-
-Now push your files to the OpenShift repository by using the folowing command:
-
-```
-git push {repo name} master 
-```
-
-Here also, the cartridge will start to deploy the new code.
+Then follow the steps described here https://www.openshift.com/kb/kb-e1006-sync-new-git-repo-with-your-own-existing-git-repo starting from "Merge remote repo with local repo:".
 
 
 ## Console
