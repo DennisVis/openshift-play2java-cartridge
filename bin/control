@@ -51,7 +51,7 @@ function load_config {
 			fi
 		}
 
-		PLAY_PARAMS=$(read_conf "openshift.play.params" $PLAY_PARAMS)
+		PLAY_PARAMS=$(read_conf ${"openshift.play.params" $PLAY_PARAMS)
 	fi
 
 	return 0
@@ -64,11 +64,9 @@ function start() {
 	
 	if [ -f ${OPENSHIFT_REPO_DIR}target/start ]; then
 			
-	  chmod +x ${OPENSHIFT_REPO_DIR}target/start
+	  chmod +x ${OPENSHIFT_REPO_DIR}target/start	
 
-	  echo "`date +"$FMT"`: Starting application '$OPENSHIFT_APP_NAME'..." | tee -a "${LOG_FILE}"			
-
-	  APP_COMMAND="${OPENSHIFT_REPO_DIR}target/start $PLAY_PARAMS -Dhttp.port=${OPENSHIFT_PLAY2JAVA_PORT} -Dhttp.address=${OPENSHIFT_PLAY2JAVA_IP} -Dconfig.resource=openshift.conf"
+	  APP_COMMAND="${OPENSHIFT_REPO_DIR}target/start ${PLAY_PARAMS//\"/} -Dhttp.port=${OPENSHIFT_PLAY2JAVA_PORT} -Dhttp.address=${OPENSHIFT_PLAY2JAVA_IP} -Dconfig.resource=openshift.conf"
 
 	  bash -c "${APP_COMMAND} 2>&1 | tee -a ${LOG_FILE}" &> /dev/null &
 
