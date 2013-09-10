@@ -1,4 +1,7 @@
 #!/bin/bash
 
-version=${PLAY_VERSION:2.1.3}
+version="2.1.3"
+if [ $PLAY_VERSION ]
+then version=$PLAY_VERSION
+fi
 (cd "${OPENSHIFT_REPO_DIR}"; ${OPENSHIFT_PLAY2JAVA_DIR}/versions/play-$version/play clean compile stage)
