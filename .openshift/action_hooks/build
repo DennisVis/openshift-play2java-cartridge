@@ -1,7 +1,4 @@
 #!/bin/bash
 
-version="2.1.3"
-if [ $PLAY_VERSION ]
-then version=$PLAY_VERSION
-fi
+version=${PLAY_VERSION:2.1.3}
 (cd "${OPENSHIFT_REPO_DIR}"; ../../versions/play-$version/play clean compile stage)
