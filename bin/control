@@ -51,7 +51,7 @@ function load_config {
 			fi
 		}
 
-		PLAY_PARAMS=$(read_conf ${"openshift.play.params" $PLAY_PARAMS)
+		PLAY_PARAMS=$(read_conf "openshift.play.params" $PLAY_PARAMS)
 	fi
 
 	return 0
