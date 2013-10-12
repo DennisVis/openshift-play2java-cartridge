@@ -1,3 +1,3 @@
 #!/bin/bash
 
-(cd "${OPENSHIFT_REPO_DIR}"; ${OPENSHIFT_REPO_DIR}/versions/play-2.2.0/play clean stage)
+(cd "${OPENSHIFT_REPO_DIR}/template"; ${OPENSHIFT_REPO_DIR}/versions/play-2.2.0/play clean stage)
