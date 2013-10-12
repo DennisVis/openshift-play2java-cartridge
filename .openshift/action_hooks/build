@@ -1,4 +1,3 @@
 #!/bin/bash
 
-version=${PLAY_VERSION:2.1.3}
-(cd "${OPENSHIFT_REPO_DIR}"; ../../versions/play-$version/play clean compile stage)
+(cd "${OPENSHIFT_REPO_DIR}"; ../../versions/play-2.2.0/play clean stage)
